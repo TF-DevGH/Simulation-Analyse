@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Simulateur de baisse de prix</title>
+</head>
+
+<body>
+  <h1>Simulateur de baisse de prix</h1>
+  <p>Cliquez sur le bouton ci-dessous pour simuler une baisse de prix :</p>
+  <button onclick="simulatePriceDrop()">Simuler une baisse de prix à 78.99€</button>
+
+  <script>
+    const url =
+      'https://steamcommunity.com/market/priceoverview/?appid=730&market_hash_name=AK-47%20%7C%20Neon%20Revolution%20%28Factory%20New%29';
+    let variable = false;
+
+
+    function checkPrice() {
+      // Code pour vérifier le prix et mettre à jour la variable si nécessaire
+      request(url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          const data = JSON.parse(body);
+          const price = parseFloat(data.median_price.substring(1));
+          if (price <= 79) {
+            console.log("Le prix est maintenant inférieur ou égal à 79€.");
+            variable = true;
+          } else {
+            console.log("Le prix est actuellement supérieur à 79€.");
+          }
+        } else {
+          console.log("Erreur lors de la récupération du prix.");
+        }
+      });
+    }
+
+    function simulatePriceDrop() {
+      console.log("Simuler une baisse de prix à 78.99€");
+      variable = true;
+    }
+
+    setInterval(checkPrice, 30000);
+  </script>
+</body>
+
+</html>
